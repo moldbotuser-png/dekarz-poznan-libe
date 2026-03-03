@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dekarz Poznań LIBE - Solidne dachy dla Twojego domu</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; scroll-behavior: smooth; }
+        h1, h2, h3 { font-weight: 700; }
+        .gradient-hero { background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%); }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        const App = () => {
+            const [menuOpen, setMenuOpen] = useState(false);
+            const [activeSection, setActiveSection] = useState('start');
+            
+            useEffect(() => {
+                const handleScroll = () => {
+                    const sections = ['start', 'o-nas', 'uslugi', 'opinie', 'kontakt'];
+                    const current = sections.find(section => {
+                        const element = document.getElementById(section);
+                        if (element) {
+                            const rect = element.getBoundingClientRect();
+                            return rect.top <= 100 && rect.bottom >= 100;
+                        }
+                        return false;
+                    });
+                    if (current) setActiveSection(current);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+            
+            const menuItems = [
+                { name: 'Start', id: 'start' },
+                { name: 'O nas', id: 'o-nas' },
+                { name: 'Usługi', id: 'uslugi' },
+                { name: 'Opinie', id: 'opinie' },
+                { name: 'Kontakt', id: 'kontakt' }
+            ];
+            
+            return (
+                <div className="min-h-screen">
+                    {/* Navbar */}
+                    <nav className="fixed top-0 w-full bg-slate-800 shadow-lg z-50">
+                        <div className="max-w-7xl mx-auto px-4 py-4">
+                            <div className="flex justify-between items-center">
+                                <div className="text-white font-bold text-xl">Dekarz Poznań LIBE</div>
+                                
+                                {/* Desktop Menu */}
+                                <div className="hidden md:flex space-x-6">
+                                    {menuItems.map(item => (
+                                        <a
+                                            key={item.id}
+                                            href={`#${item.id}`}
+                                            className={`font-semibold text-sm transition-colors ${
+                                                activeSection === item.id ? 'text-orange-400' : 'text-white hover:text-orange-300'
+                                            }`}
+                                        >
+                                            {item.name}
+                                        </a>
+                                    ))}
+                                </div>
+                                
+                                {/* Mobile Menu Button */}
+                                <button 
+                                    className="md:hidden text-white"
+                                    onClick={() => setMenuOpen(!menuOpen)}
+                                >
+                                    <i className={`fas ${menuOpen ? 'fa-times' : 'fa-bars'} text-2xl`}></i>
+                                </button>
+                            </div>
+                            
+                            {/* Mobile Menu */}
+                            {menuOpen && (
+                                <div className="md:hidden mt-4 pb-4">
+                                    {menuItems.map(item => (
+                                        <a
+                                            key={item.id}
+                                            href={`#${item.id}`}
+                                            className="block py-2 text-white hover:text-orange-400 transition-colors"
+                                            onClick={() => setMenuOpen(false)}
+                                        >
+                                            {item.name}
+                                        </a>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </nav>
+
+                    {/* Hero Section */}
+                    <section id="start" className="gradient-hero min-h-screen flex items-center justify-center text-center pt-20 relative" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1632778149116-f9d5b7e0f5c2?auto=format&fit=crop&q=80)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundBlendMode: 'overlay'}}>
+                        <div className="absolute inset-0 bg-slate-900/70"></div>
+                        <div className="max-w-5xl mx-auto px-4 z-10 text-white">
+                            <h1 className="text-5xl md:text-7xl mb-6 leading-tight font-bold">
+                                Solidne dachy<br />dla Twojego domu
+                            </h1>
+                            <p className="text-2xl md:text-3xl mb-8 font-semibold text-orange-400">
+                                Dekarz Poznań LIBE
+                            </p>
+                            <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto">
+                                Profesjonalne usługi ciesielskie i dekarskie w Poznaniu
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <a
+                                    href="#kontakt"
+                                    className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all transform hover:scale-105"
+                                >
+                                    <i className="fas fa-phone mr-2"></i> Skontaktuj się
+                                </a>
+                                <a
+                                    href="#uslugi"
+                                    className="inline-block bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all backdrop-blur"
+                                >
+                                    <i className="fas fa-tools mr-2"></i> Nasze usługi
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* O nas */}
+                    <section id="o-nas" className="py-24 bg-white">
+                        <div className="max-w-6xl mx-auto px-4">
+                            <h2 className="text-4xl md:text-5xl mb-12 text-slate-800 font-bold">O nas</h2>
+                            <div className="grid md:grid-cols-2 gap-12 items-center">
+                                <div>
+                                    <p className="text-xl leading-relaxed text-gray-700 mb-6">
+                                        <strong className="text-orange-600">Dekarz Poznań LIBE</strong> to profesjonalna firma specjalizująca się w usługach 
+                                        ciesielskich i dekarskich. Działamy w Poznaniu i okolicach, oferując kompleksowe rozwiązania 
+                                        dla Twojego dachu.
+                                    </p>
+                                    <p className="text-xl leading-relaxed text-gray-700 mb-6">
+                                        Nasza siedziba znajduje się na ulicy Wrzesińskiej w Poznaniu. Zapewniamy profesjonalne podejście, 
+                                        wysoką jakość wykonania oraz terminowość realizacji zleceń.
+                                    </p>
+                                    <div className="flex items-center space-x-4">
+                                        <i className="fas fa-map-marker-alt text-orange-500 text-3xl"></i>
+                                        <div>
+                                            <p className="font-bold text-gray-900">Wrzesińska</p>
+                                            <p className="text-gray-600">61-021 Poznań, Poland</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="rounded-2xl overflow-hidden shadow-xl">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1565008576549-57569a49371d?auto=format&fit=crop&q=80" 
+                                        alt="Dekarz Poznań LIBE - Ciesielstwo i Dekarstwo"
+                                        className="w-full h-96 object-cover"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Usługi */}
+                    <section id="uslugi" className="py-24 bg-gray-100">
+                        <div className="max-w-6xl mx-auto px-4">
+                            <h2 className="text-4xl md:text-5xl mb-12 text-slate-800 font-bold text-center">Nasze Usługi</h2>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                                {[
+                                    { icon: 'fa-home', title: 'Montaż pokryć dachowych', desc: 'Profesjonalny montaż dachówki, blachodachówki i innych materiałów pokryciowych.' },
+                                    { icon: 'fa-hammer', title: 'Obróbki blacharskie', desc: 'Kompleksowe obróbki blacharskie, rynny, orynnowanie i elementy wykończeniowe.' },
+                                    { icon: 'fa-ruler-combined', title: 'Ciesielstwo', desc: 'Budowa konstrukcji dachowych, więźby dachowe i inne prace ciesielskie.' },
+                                    { icon: 'fa-tools', title: 'Naprawa dachów', desc: 'Szybkie naprawy przecieków, wymiana uszkodzonych elementów i konserwacja.' }
+                                ].map((service, i) => (
+                                    <div key={i} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                                        <div className="bg-orange-500 text-white w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                            <i className={`fas ${service.icon} text-3xl`}></i>
+                                        </div>
+                                        <h3 className="text-xl mb-4 font-bold text-gray-900">{service.title}</h3>
+                                        <p className="text-gray-600">{service.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Opinie */}
+                    <section id="opinie" className="py-24 bg-slate-800 text-white">
+                        <div className="max-w-6xl mx-auto px-4">
+                            <h2 className="text-4xl md:text-5xl mb-12 font-bold">Opinie</h2>
+                            <div className="bg-white/10 p-12 rounded-3xl backdrop-blur mb-8 text-center">
+                                <p className="text-3xl mb-4">
+                                    Ocena: <span className="text-orange-400 font-bold">3/5 ⭐</span>
+                                </p>
+                                <p className="text-xl mb-8 text-gray-300">(1 opinia w Google)</p>
+                                <a
+                                    href="https://www.google.com/maps/search/Dekarz%20Pozna%C5%84%20LIBE%20Wrzesi%C5%84ska%2C%2061-021%20Pozna%C5%84%2C%20Poland/reviews"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all transform hover:scale-105"
+                                >
+                                    <i className="fas fa-star mr-2"></i> Zobacz wszystkie opinie w Google
+                                </a>
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {[1, 2].map(i => (
+                                    <div key={i} className="bg-white/5 p-8 rounded-2xl backdrop-blur border-2 border-dashed border-white/20">
+                                        <div className="flex items-center mb-4">
+                                            <div className="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center mr-4">
+                                                <i className="fas fa-user text-orange-400"></i>
+                                            </div>
+                                            <div>
+                                                <p className="font-bold">[UZUPEŁNIJ]</p>
+                                                <p className="text-sm text-gray-400">Opinia klienta</p>
+                                            </div>
+                                        </div>
+                                        <p className="text-gray-300">Zapraszamy do zostawienia opinii o naszej firmie!</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Kontakt */}
+                    <section id="kontakt" className="py-24 bg-white">
+                        <div className="max-w-6xl mx-auto px-4">
+                            <h2 className="text-4xl md:text-5xl mb-12 text-slate-800 font-bold">Kontakt</h2>
+                            <div className="grid md:grid-cols-2 gap-12">
+                                <div>
+                                    <div className="bg-gray-50 p-8 rounded-2xl mb-6">
+                                        <h3 className="text-2xl font-bold mb-6 text-gray-900">Dekarz Poznań LIBE</h3>
+                                        <div className="space-y-6">
+                                            <div className="flex items-start">
+                                                <i className="fas fa-map-marker-alt text-orange-500 mr-4 text-2xl mt-1"></i>
+                                                <div>
+                                                    <p className="font-semibold text-gray-900">Adres</p>
+                                                    <p className="text-lg text-gray-700">Wrzesińska<br />61-021 Poznań, Poland</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-start">
+                                                <i className="fas fa-phone text-orange-500 mr-4 text-2xl mt-1"></i>
+                                                <div>
+                                                    <p className="font-semibold text-gray-900">Telefon</p>
+                                                    <a href="tel:" className="text-lg text-orange-600 hover:text-orange-700 font-bold">
+                                                        [UZUPEŁNIJ NUMER TELEFONU]
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-start">
+                                                <i className="fab fa-facebook text-orange-500 mr-4 text-2xl mt-1"></i>
+                                                <div>
+                                                    <p className="font-semibold text-gray-900">Facebook</p>
+                                                    <a 
+                                                        href="https://m.facebook.com/Ciesielstwo-Dekarstwo-Libe-101708731370859/?ref=bookmarks"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-lg text-blue-600 hover:text-blue-700"
+                                                    >
+                                                        Odwiedź nasz profil
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a
+                                        href="https://www.google.com/maps/search/Dekarz%20Pozna%C5%84%20LIBE%20Wrzesi%C5%84ska%2C%2061-021%20Pozna%C5%84%2C%20Poland"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded-xl text-center text-lg transition-all"
+                                    >
+                                        <i className="fas fa-map-marked-alt mr-2"></i> Otwórz w Google Maps
+                                    </a>
+                                </div>
+                                <div>
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2433.1!2d16.9!3d52.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTLCsDI0JzAwLjAiTiAxNsKwNTQnMDAuMCJF!5e0!3m2!1spl!2spl!4v1234567890"
+                                        width="100%"
+                                        height="500"
+                                        style={{ border: 0, borderRadius: '1rem' }}
+                                        allowFullScreen=""
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-slate-900 text-white py-12">
+                        <div className="max-w-6xl mx-auto px-4 text-center">
+                            <p className="text-2xl font-bold mb-2">Dekarz Poznań LIBE</p>
+                            <p className="text-gray-400 mb-4">Ciesielstwo i Dekarstwo</p>
+                            <p className="text-sm text-gray-500">
+                                © {new Date().getFullYear()} Dekarz Poznań LIBE. Wrzesińska, 61-021 Poznań, Poland
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</body>
+</html>
